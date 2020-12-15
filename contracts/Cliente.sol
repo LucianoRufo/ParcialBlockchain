@@ -23,7 +23,10 @@ contract Cliente {
         require(msg.sender == owner || msg.sender == inmobiliariaAddres, "Only the owner or inmobiliaria can call this function.");
         _;
     }
-
+    modifier notInmobiliariaDeposit() {
+        require(msg.sender != inmobiliariaAddres, "Only the owner or inmobiliaria can call this function.");
+        _;
+    }
     modifier onlyOwner() {
         require(msg.sender == owner , "Only the owner or inmobiliaria can call this function.");
         _;
@@ -42,24 +45,31 @@ contract Cliente {
         return address(this).balance;
     }
 
+    function getSavingNumber() public view  isOwnerOrInmobiliaria returns(uint256){
+        return actualSavings;
+    }
+
+    function getObjectiveNumber() public view  isOwnerOrInmobiliaria returns(uint256){
+        return objetivo;
+    }
+
     function getAddress() public view  returns(address){
         return address(this);
     }
 
-    receive() external payable {
+    receive() external payable notInmobiliariaDeposit {
        if(msg.value > 0) {
-                uint256 amountToTransfer = msg.value /100 * (commissionInmobiliaria);
-                inmobiliariaAddres.transfer(amountToTransfer); 
-                actualSavings+= (msg.value - amountToTransfer);
+            uint256 amountToTransfer = msg.value /100 * (commissionInmobiliaria);
+            inmobiliariaAddres.transfer(amountToTransfer); 
+            actualSavings+= (msg.value - amountToTransfer);
         }
     }
 
-    function withDrawSavings() public onlyOwner objectiveAccomplished {
-        msg.sender.transfer(actualSavings);
-        close();
+    function withDrawSavings() public isOwnerOrInmobiliaria objectiveAccomplished {
+        owner.transfer(actualSavings);
     }
 
-    function close() internal { 
+    function close() public isOwnerOrInmobiliaria { 
         exist = false;
         selfdestruct(address(this)); 
     }

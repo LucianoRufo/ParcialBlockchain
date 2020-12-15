@@ -69,6 +69,10 @@ contract Inmobiliaria {
         return contratosCliente[cliente].getBalance(); 
     }
 
+    function getMyBalance() public view isContractOwner returns(uint256){
+        return contratosCliente[msg.sender].getBalance(); 
+    }
+
     function retireFunds(uint256 amount) public onlyPersonal  {
         msg.sender.transfer(amount);
     }
@@ -92,6 +96,13 @@ contract Inmobiliaria {
                 montoActual+= amountToSavings;
             }
         }
+    }
+
+    function destroyClientContract() public isContractOwner {
+        if(contratosCliente[msg.sender].getSavingNumber() >= contratosCliente[msg.sender].getObjectiveNumber()){
+            contratosCliente[msg.sender].withDrawSavings();
+            contratosCliente[msg.sender].close();
+        } 
     }
 
 }
