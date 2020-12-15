@@ -113,10 +113,10 @@ module.exports = { ...methods };
 //Agregar más casos de necesitar más herencias.
 function getImports(dependency) {
   switch (dependency) {
-    case "ContratoConfiguracion.sol":
+    case "Cliente.sol":
       return {
         contents: fs.readFileSync(
-          path.resolve(process.cwd(), "contracts", "ContratoConfiguracion.sol"),
+          path.resolve(process.cwd(), "contracts", "Cliente.sol"),
           "utf8"
         ),
       };
