@@ -172,8 +172,6 @@ router.post("/withdrawAndClose", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
     const sender = req.body.sender;
-    const contract = contractService.getContract(contractName);
-    const sender = req.body.sender;
 
     let result = await contract.methods
       .destroyClientContract()
