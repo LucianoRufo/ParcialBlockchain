@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const contractService = require("../services/contract.service");
 var Web3 = require("web3");
-const contractName = "CuentaAhorro";
+const contractName = "Inmobiliaria";
 
 router.get("/compile", function (req, res) {
   try {
