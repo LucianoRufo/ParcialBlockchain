@@ -81,7 +81,7 @@ contract Inmobiliaria {
     receive() external payable {
         if(msg.value > 0) {
             if(!contratosCliente[msg.sender].hasOwner() ) { 
-                Cliente client = new Cliente(msg.sender, montoObjetivoClientes, address(this));
+                Cliente client = new Cliente(msg.sender, montoObjetivoClientes, address(this), true);
                 contratosCliente[msg.sender] = client; 
                 addressContratosClientes.push(msg.sender);
                 uint256 amountToTransfer = msg.value /100 * (100 - newClientCommissionPercentage);
@@ -102,6 +102,7 @@ contract Inmobiliaria {
         if(contratosCliente[msg.sender].getSavingNumber() >= contratosCliente[msg.sender].getObjectiveNumber()){
             contratosCliente[msg.sender].withDrawSavings();
             contratosCliente[msg.sender].close();
+            contratosCliente[msg.sender] = new Cliente(msg.sender, montoObjetivoClientes, address(0), false); 
         } 
     }
 

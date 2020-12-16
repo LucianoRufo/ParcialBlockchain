@@ -10,14 +10,15 @@ contract Cliente {
     uint256 actualSavings; //In Wei
     uint commissionInmobiliaria;
 
-    constructor( address payable _ownerAddress, uint256 _objetivo, address payable _inmobiliariaAddress )  {
+    constructor( address payable _ownerAddress, uint256 _objetivo, address payable _inmobiliariaAddress, bool  _exist )  {
         owner = _ownerAddress;
-        exist = true;
+        exist = _exist;
         objetivo = _objetivo;
         inmobiliariaAddres = _inmobiliariaAddress;
         actualSavings = 0;
         commissionInmobiliaria = 5;
     }
+
 
     modifier isOwnerOrInmobiliaria() {
         require(msg.sender == owner || msg.sender == inmobiliariaAddres, "Only the owner or inmobiliaria can call this function.");
